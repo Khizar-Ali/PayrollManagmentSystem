@@ -1,8 +1,11 @@
 package com.example.payrollmanagmentsystem.web;
 
 import com.example.payrollmanagmentsystem.domain.MedicalAllowance;
+import com.example.payrollmanagmentsystem.dto.LeaveDTO;
+import com.example.payrollmanagmentsystem.dto.MedicalAllowanceDTO;
 import com.example.payrollmanagmentsystem.exception.UserNotFoundException;
 import com.example.payrollmanagmentsystem.repo.MedicalAllowanceRepo;
+import com.example.payrollmanagmentsystem.services.MedicalAllowanceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -18,6 +21,9 @@ public class MedicalAllowanceResponse {
     @Autowired
     private MedicalAllowanceRepo medicalAllowanceRepo;
 
+    @Autowired
+    private MedicalAllowanceService medicalAllowanceService;
+
     @GetMapping("/medicalallowance")
     public List<MedicalAllowance> retrieveAllUsers(){
         return medicalAllowanceRepo.findAll();
@@ -31,6 +37,12 @@ public class MedicalAllowanceResponse {
             throw new UserNotFoundException("id-"+ id);
 
         return user;
+    }
+
+    @GetMapping("/medicalallowance/employee")
+    public List<MedicalAllowanceDTO> retrieveAllowance(@RequestBody int id){
+        List<MedicalAllowanceDTO> medicalAllowanceDTOS = medicalAllowanceService.getMedicalAllowance(id);
+        return medicalAllowanceDTOS;
     }
 
     @PostMapping("/medicalallowance")
